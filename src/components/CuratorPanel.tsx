@@ -54,7 +54,6 @@ export default function CuratorPanel({ items, onUpdateStatus, onEditItem }: Cura
   // Call server-side Gemini route to enrich community submission or suggest tags
   const handleAiEnrichment = async (item: CommunityItem) => {
     setAiLoadingId(item.id);
-    setAiLoadingId(item.id);
     try {
       // Mocking AI response for GitHub pages static deployment
       await new Promise(r => setTimeout(r, 1000));

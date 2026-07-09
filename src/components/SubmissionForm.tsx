@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CommunityItem, ItemType } from '../types';
-import { isSupabaseConfigured, supabase } from '../supabaseClient';
+import { isSupabaseConfigured, supabase } from '../lib/supabaseClient';
 import {
   BookOpen, MapPin, Music, Image as ImageIcon, Sparkles, Send,
   Map, CheckCircle2, Upload, X, FileText, Film, Volume2,

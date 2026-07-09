@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { INITIAL_COMMUNITY_ITEMS } from './data';
 import { CommunityItem, StoryStatus } from './types';
-import { isSupabaseConfigured, supabase, mapDbToItem, mapItemToDb } from './supabaseClient';
+import { isSupabaseConfigured, supabase, mapDbToItem, mapItemToDb } from './lib/supabaseClient';
 
 // Component Imports
 import IntroPortal from './components/IntroPortal';
