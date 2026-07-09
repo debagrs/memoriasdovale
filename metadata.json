@@ -1,0 +1,6 @@
+{
+  "name": "Vale Vêneto: Memória e Música",
+  "description": "Plataforma interativa de cartografia afetiva, memórias do Festival de Música e curadoria da história oral de Vale Vêneto, RS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
