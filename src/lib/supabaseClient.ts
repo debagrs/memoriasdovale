@@ -22,10 +22,6 @@ if (isSupabaseConfigured) {
 }
 export const supabase: SupabaseClient | null = client;
 
-export const supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
-
 export function mapDbToItem(db: any): CommunityItem {
   return {
     id: String(db.id),
