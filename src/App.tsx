@@ -317,7 +317,7 @@ export default function App() {
       )}
 
       {/* Global Poetic Footer */}
-      <footer className="bg-[#065143] text-stone-100 py-12 border-t border-stone-900">
+      <footer className="bg-[#83AF90] text-[#1F0318] hover:bg-[#6E9C7D]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-start">
 
           <div className="lg:col-span-4 space-y-4 text-left">
