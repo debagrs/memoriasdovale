@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CommunityItem, StoryStatus } from '../types';
-import { Shield, Check, X, Edit3, Trash, User, Eye, Sparkles, AlertCircle, FileText, Calendar, Tag, RefreshCcw, Save } from 'react-feather';
+import { Shield, Check, X, Edit3, Trash, User, Eye, Sparkles, AlertCircle, FileText, Calendar, Tag, RefreshCcw, Save } from 'lucide-react';
 
 interface CuratorPanelProps {
   items: CommunityItem[];
