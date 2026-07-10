@@ -33,12 +33,14 @@
 }
 
 @layer base {
+
   body {
-    background-color: #fafaf7;
-    color: #1e2019;
+    background-color: #f3e9dc;
+    color: #1f0318;
     font-family: var(--font-sans);
     overflow-x: hidden;
-  }
+  
+}
 }
 
 /* Custom scrollbar to match the editorial styling */
