@@ -15,10 +15,7 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
   // Filter approved community items specific to the classical music festival
-  const festivalStories = approvedItems.filter(item => 
-    item.category === 'Música Clássica' || 
-    item.type === 'festival'
-  );
+  const festivalStories = approvedItems;
 
   // Custom data art calculation - finding max value for charts scaling
   const maxStudents = Math.max(...FESTIVAL_HISTORY.map(f => f.students));
