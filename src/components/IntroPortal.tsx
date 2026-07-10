@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Music, MapPin, Sparkles, BookOpen, Heart, Activity, ShieldAlert, ArrowRight, ChevronLeft, ChevronRight, ChevronDown } from 'react-feather';
+import { Volume2, VolumeX, Music, MapPin, Sparkles, BookOpen, Heart, Activity, ShieldAlert, ArrowRight, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
 interface IntroPortalProps {
   onNavigate: (tab: string) => void;
