@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CommunityItem, MentalMapReference } from '../types';
 import { HISTORIC_LOCATIONS } from '../data';
-import { Compass, Music, MapPin, Eye, Filter, Calendar, Tag, User, Sparkles, Volume2 } from 'lucide-react';
+import { Compass, Music, MapPin, Eye, Filter, Calendar, Tag, User, Sparkles, Volume2 } from 'react-feather';
 
 interface AcousticCartographyProps {
   approvedItems: CommunityItem[];
