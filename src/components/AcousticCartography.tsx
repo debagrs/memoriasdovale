@@ -136,7 +136,7 @@ type="button"
                         isPlayingTeaser === story.id
                           ? 'animate-bounce'
                           : ''
-                      }`}
+                      }}
                     />
 
                     <span>
