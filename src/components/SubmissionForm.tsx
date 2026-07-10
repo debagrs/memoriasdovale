@@ -212,9 +212,10 @@ export default function SubmissionForm({ onAddSubmissions, onNavigate }: Submiss
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!author.trim() || !title.trim() || !content.trim()) {
-      setErrorMsg('Por favor, preencha todos os campos obrigatórios (Autor, Título, Relato).');
-      return;
+    if (!author.trim() || !content.trim()) {
+  setErrorMsg('Por favor, preencha todos os campos obrigatórios (Autor e Relato).');
+  return;
+
     }
 
     if (!agreedToTerms) {
@@ -232,7 +233,7 @@ export default function SubmissionForm({ onAddSubmissions, onNavigate }: Submiss
     const newItem: CommunityItem = {
       id: `submission-${Date.now()}`,
       type,
-      title,
+      title: title.trim() || `Memória de ${author.trim()}`,
       author,
       date,
       content,
