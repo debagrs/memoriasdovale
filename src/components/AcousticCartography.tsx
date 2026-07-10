@@ -124,8 +124,8 @@ export default function FestivalMemories({
 
                 {story.audioMood && (
                   <button
-                    id={`btn-play-${story.id}`}
-                    type="button"
+id={`btn-play-${story.id}`}
+type="button"
                     onClick={() => toggleTeaser(story.id)}
                     aria-expanded={isPlayingTeaser === story.id}
                     aria-controls={`audio-teaser-${story.id}`}
