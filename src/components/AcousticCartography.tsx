@@ -87,7 +87,7 @@ export default function FestivalMemories({
           {festivalStories.map((story) => (
             <div
               key={story.id}
-              id={`festival-story-${story.id}`}
+              id={'festival-story-${story.id}`}
               className="flex flex-col justify-between rounded-2xl border border-stone-200/50 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gold-300"
             >
               <div className="space-y-4 text-left">
