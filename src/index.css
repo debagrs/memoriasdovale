@@ -7,27 +7,29 @@
   --font-mono: 'JetBrains Mono', monospace;
   --font-tech: 'Space Grotesk', sans-serif;
 
-  --color-gold-50: #fbf8f1;
-  --color-gold-100: #f4edd9;
-  --color-gold-200: #eadeb9;
-  --color-gold-300: #decb93;
-  --color-gold-400: #ceb267;
-  --color-gold-500: #be9742;
-  --color-gold-600: #9e782f;
-  --color-gold-700: #7d5b22;
-  --color-gold-800: #5d4218;
-  --color-gold-900: #422f12;
+  /* Bege */
+  --color-gold-50: #fffaf4;
+  --color-gold-100: #f9f0e6;
+  --color-gold-200: #f3e9dc;
+  --color-gold-300: #ead8c4;
+  --color-gold-400: #c08552;
+  --color-gold-500: #ad7042;
+  --color-gold-600: #8d5832;
+  --color-gold-700: #6e4225;
+  --color-gold-800: #4e2c1d;
+  --color-gold-900: #321b13;
 
-  --color-olive-50: #fafaf5;
-  --color-olive-100: #f2f3e8;
-  --color-olive-200: #e2e4ce;
-  --color-olive-300: #ccd1aa;
-  --color-olive-400: #b4ba81;
-  --color-olive-500: #98a159;
-  --color-olive-600: #7a8241;
-  --color-olive-700: #5f6633;
-  --color-olive-800: #4a4f29;
-  --color-olive-900: #3a3d21;
+  /* Verde dos CTAs */
+  --color-olive-50: #f3f8f4;
+  --color-olive-100: #deebe1;
+  --color-olive-200: #c3dbc9;
+  --color-olive-300: #a4c6ad;
+  --color-olive-400: #83af90;
+  --color-olive-500: #6e9c7d;
+  --color-olive-600: #577d63;
+  --color-olive-700: #42604d;
+  --color-olive-800: #2e4436;
+  --color-olive-900: #1f3027;
 }
 
 @layer base {
