@@ -85,11 +85,11 @@ export default function FestivalMemories({
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {festivalStories.map((story) => (
-            <div
-              key={story.id}
-              id={'festival-story-${story.id}`}
-              className="flex flex-col justify-between rounded-2xl border border-stone-200/50 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gold-300"
-            >
+           <div
+  key={story.id}
+  id={"festival-story-" + story.id}
+  className="flex flex-col justify-between rounded-2xl border border-stone-200/50 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gold-300"
+>
               <div className="space-y-4 text-left">
                 <div className="flex items-center justify-between text-xs">
                   <span className="rounded bg-rose-50 px-2.5 py-0.5 font-mono font-medium tracking-wide text-rose-800">
