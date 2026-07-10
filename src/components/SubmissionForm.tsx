@@ -6,7 +6,7 @@ import {
   BookOpen, MapPin, Music, Image as ImageIcon, Sparkles, Send,
   Map, CheckCircle2, Upload, X, FileText, Film, Volume2,
   AlertCircle, Loader2,
-} from 'react-feather';
+} from 'lucide-react';
 
 interface SubmissionFormProps {
   onAddSubmissions: (item: CommunityItem) => void;
