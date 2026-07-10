@@ -121,7 +121,6 @@ export default function FestivalMemories({
                     </strong>
                   </span>
                 </div>
-                </section>
 
                 {story.audioMood && (
                   <button
@@ -133,12 +132,10 @@ type="button"
                     className="flex cursor-pointer items-center gap-1 rounded-lg border border-stone-200 px-2.5 py-1.5 font-mono text-[10px] uppercase text-stone-600 transition hover:border-gold-400"
                   >
                     <Volume2
-                      className={`h-3.5 w-3.5 text-emerald-600 ${
-                        isPlayingTeaser === story.id
-                          ? 'animate-bounce'
-                          : ''
-                      }}
-                    />
+  className={`h-3.5 w-3.5 text-emerald-600 ${
+    isPlayingTeaser === story.id ? 'animate-bounce' : ''
+  }`}
+/>
 
                     <span>
                       {isPlayingTeaser === story.id
