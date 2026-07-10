@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { INITIAL_COMMUNITY_ITEMS } from './data';
@@ -10,19 +11,17 @@ import AcousticCartography from './components/AcousticCartography';
 import FestivalMemories from './components/FestivalMemories';
 import SubmissionForm from './components/SubmissionForm';
 import CuratorPanel from './components/CuratorPanel';
+import CuratorLogin from './components/CuratorLogin';
 
 // Lucide Icons
-import { 
-  Compass, 
-  MapPin, 
-  Music, 
-  BookOpen, 
-  ShieldAlert, 
-  Heart, 
-  Globe, 
-  Sparkles,
-  Award,
-  ChevronRight
+import {
+  Compass,
+  MapPin,
+  Music,
+  BookOpen,
+  ShieldAlert,
+  Globe,
+  LogOut,
 } from 'lucide-react';
 
 export default function App() {
@@ -30,8 +29,23 @@ export default function App() {
   const [items, setItems] = useState<CommunityItem[]>(INITIAL_COMMUNITY_ITEMS);
   const [syncError, setSyncError] = useState<string>('');
 
-  // Load records from Supabase. If Supabase is not configured or still empty,
-  // the app keeps the local seed so the page never renders blank.
+  // Auth (curadoria) state
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => setSession(s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    if (supabase) await supabase.auth.signOut();
+    setSession(null);
+    setActiveTab('portal');
+  };
+
+  // Load records from Supabase.
   useEffect(() => {
     const fetchMemories = async () => {
       if (!isSupabaseConfigured || !supabase) {
@@ -71,7 +85,6 @@ export default function App() {
     fetchMemories();
   }, []);
 
-  // Status transition handle (Approve / Reject) with optimistic update
   const handleUpdateStatus = async (id: string, newStatus: StoryStatus) => {
     const updated = items.map(item => {
       if (item.id === id) {
@@ -86,7 +99,6 @@ export default function App() {
     }
   };
 
-  // Curator edit override with optimistic update
   const handleEditItem = async (id: string, updatedFields: Partial<CommunityItem>) => {
     const updated = items.map(item => {
       if (item.id === id) {
@@ -95,21 +107,20 @@ export default function App() {
       return item;
     });
     setItems(updated);
-    
+
     const dbUpdate: any = {};
     if (updatedFields.title !== undefined) dbUpdate.title = updatedFields.title;
     if (updatedFields.author !== undefined) dbUpdate.author = updatedFields.author;
     if (updatedFields.content !== undefined) dbUpdate.content = updatedFields.content;
     if (updatedFields.category !== undefined) dbUpdate.category = updatedFields.category;
     if (updatedFields.status !== undefined) dbUpdate.status = updatedFields.status;
-    
+
     if (supabase) {
       const { error } = await supabase.from('memories').update(dbUpdate).eq('id', id);
       if (error) setSyncError(`Erro ao salvar edição: ${error.message}`);
     }
   };
 
-  // Add new citizen contribution
   const handleAddSubmission = async (newItem: CommunityItem) => {
     const updated = [newItem, ...items];
     setItems(updated);
@@ -126,7 +137,6 @@ export default function App() {
     }
   };
 
-  // Derived state selections
   const approvedItems = items.filter(item => item.status === 'approved');
   const pendingItems = items.filter(item => item.status === 'pending');
 
@@ -139,7 +149,7 @@ export default function App() {
 
   return (
     <div id="app-root-frame" className="min-h-screen bg-[#FAF9F5] flex flex-col justify-between selection:bg-gold-200">
-      
+
       {syncError && (
         <div className="bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-2 text-xs font-mono text-center">
           {syncError}
@@ -149,10 +159,10 @@ export default function App() {
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-stone-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          
+
           {/* Logo Brand Title */}
-          <div 
-            id="brand-logo" 
+          <div
+            id="brand-logo"
             onClick={() => setActiveTab('portal')}
             className="flex items-center gap-2.5 cursor-pointer select-none group"
           >
@@ -192,25 +202,36 @@ export default function App() {
             })}
           </nav>
 
-          {/* Curator Control Trigger & Badge (Débora's Entry Point) */}
+          {/* Curator badge ONLY when logged in */}
           <div className="flex items-center gap-3">
-            <button
-              id="nav-btn-curatoria"
-              onClick={() => setActiveTab('curadoria')}
-              className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xl font-bold transition flex items-center gap-2 cursor-pointer border ${
-                activeTab === 'curadoria'
-                  ? 'bg-olive-950 text-gold-400 border-olive-950 shadow-md'
-                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50'
-              }`}
-            >
-              <ShieldAlert className="w-3.5 h-3.5 text-gold-500" />
-              <span>Curadoria</span>
-              {pendingItems.length > 0 && (
-                <span className="bg-gold-400 text-stone-950 text-[10px] px-1.5 py-0.5 rounded-full font-black animate-bounce shrink-0">
-                  {pendingItems.length}
-                </span>
-              )}
-            </button>
+            {session && (
+              <>
+                <button
+                  id="nav-btn-curatoria"
+                  onClick={() => setActiveTab('curadoria')}
+                  className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xl font-bold transition flex items-center gap-2 cursor-pointer border ${
+                    activeTab === 'curadoria'
+                      ? 'bg-olive-950 text-gold-400 border-olive-950 shadow-md'
+                      : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50'
+                  }`}
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-gold-500" />
+                  <span>Curadoria</span>
+                  {pendingItems.length > 0 && (
+                    <span className="bg-gold-400 text-stone-950 text-[10px] px-1.5 py-0.5 rounded-full font-black animate-bounce shrink-0">
+                      {pendingItems.length}
+                    </span>
+                  )}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-2.5 text-xs font-mono uppercase tracking-wider rounded-xl font-bold text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition flex items-center gap-2 cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sair</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -233,7 +254,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero Portal (edge-to-edge, outside max-w container) */}
+      {/* Hero Portal */}
       <AnimatePresence mode="wait">
         {activeTab === 'portal' && (
           <motion.div
@@ -252,7 +273,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Primary Workspace Route Area (constrained) */}
+      {/* Primary Workspace Route Area */}
       {activeTab !== 'portal' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 w-full flex-grow">
           <AnimatePresence mode="wait">
@@ -280,11 +301,15 @@ export default function App() {
               )}
 
               {activeTab === 'curadoria' && (
-                <CuratorPanel
-                  items={items}
-                  onUpdateStatus={handleUpdateStatus}
-                  onEditItem={handleEditItem}
-                />
+                session ? (
+                  <CuratorPanel
+                    items={items}
+                    onUpdateStatus={handleUpdateStatus}
+                    onEditItem={handleEditItem}
+                  />
+                ) : (
+                  <CuratorLogin />
+                )
               )}
             </motion.div>
           </AnimatePresence>
@@ -294,7 +319,7 @@ export default function App() {
       {/* Global Poetic Footer */}
       <footer className="bg-stone-950 text-stone-100 py-12 border-t border-stone-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-start">
-          
+
           <div className="lg:col-span-4 space-y-4 text-left">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-olive-900 text-gold-400 rounded-lg">
@@ -325,6 +350,14 @@ export default function App() {
             <p className="text-[10px] text-stone-500 font-light">
               &copy; 2026 Vale Vêneto Memórias. Preservando a oralidade gaúcha italiana.
             </p>
+            {/* Discreet curator access link */}
+            <button
+              onClick={() => setActiveTab('curadoria')}
+              className="text-[10px] font-mono text-stone-600 hover:text-gold-400 transition uppercase tracking-widest cursor-pointer inline-flex items-center gap-1"
+            >
+              <ShieldAlert className="w-3 h-3" />
+              {session ? 'Painel de Curadoria' : 'Acesso Curadoria'}
+            </button>
           </div>
 
         </div>
