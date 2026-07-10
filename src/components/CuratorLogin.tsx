@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { ShieldAlert, LogIn } from 'react-feather';
+import { ShieldAlert, LogIn } from 'lucide-react';
 
 export default function CuratorLogin() {
   const [email, setEmail] = useState('');
