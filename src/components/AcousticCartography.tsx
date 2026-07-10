@@ -121,6 +121,7 @@ export default function FestivalMemories({
                     </strong>
                   </span>
                 </div>
+                </section>
 
                 {story.audioMood && (
                   <button
