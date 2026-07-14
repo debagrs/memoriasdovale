@@ -5,14 +5,11 @@ import { FESTIVAL_HISTORY } from '../data';
 import {
   Music,
   Eye,
-  Calendar,
   Sparkles,
   BookOpen,
   Volume2,
-  TrendingUp,
   Users,
   Award,
-  Play
 } from 'lucide-react';
 
 interface FestivalMemoriesProps {
@@ -22,6 +19,7 @@ interface FestivalMemoriesProps {
 export default function FestivalMemories({ approvedItems }: FestivalMemoriesProps) {
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [isPlayingTeaser, setIsPlayingTeaser] = useState<string | null>(null);
+  const [mediaErrors, setMediaErrors] = useState<Record<string, boolean>>({});
 
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
@@ -246,52 +244,76 @@ const festivalStories = approvedItems.filter((item) => {
           {story.content}
         </p>
 
-        {story.mediaUrl && (
-          <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
-            {story.mediaType === 'video' ? (
+        {story.mediaUrl ? (
+          <div className="mt-4 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
+            {String(story.mediaType || '').toLowerCase().startsWith('video') ? (
               <video
+                src={String(story.mediaUrl).trim()}
                 controls
                 preload="metadata"
-                className="w-full max-h-[460px] bg-black"
+                className="block w-full max-h-[460px] bg-black"
               >
-                <source src={story.mediaUrl} />
                 Seu navegador não consegue reproduzir este vídeo.
               </video>
-            ) : story.mediaType === 'audio' ? (
+            ) : String(story.mediaType || '').toLowerCase().startsWith('audio') ? (
               <div className="p-4 bg-stone-50">
-                <audio controls preload="metadata" className="w-full">
-                  <source src={story.mediaUrl} />
+                <audio
+                  src={String(story.mediaUrl).trim()}
+                  controls
+                  preload="metadata"
+                  className="w-full"
+                >
                   Seu navegador não consegue reproduzir este áudio.
                 </audio>
               </div>
-            ) : story.mediaType === 'document' ? (
+            ) : String(story.mediaType || '').toLowerCase().includes('pdf') ||
+              String(story.mediaType || '').toLowerCase().includes('document') ? (
               <a
-                href={story.mediaUrl}
+                href={String(story.mediaUrl).trim()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between gap-3 p-4 bg-stone-50 text-stone-700 hover:bg-stone-100 transition"
               >
-                <span className="text-xs font-mono">
+                <span className="text-xs font-mono break-all">
                   {story.mediaFileName || 'Abrir documento'}
                 </span>
-
                 <span aria-hidden="true">↗</span>
               </a>
+            ) : mediaErrors[story.id] ? (
+              <div className="p-4 text-xs text-red-800 bg-red-50">
+                <p className="font-semibold">A imagem não conseguiu carregar.</p>
+                <a
+                  href={String(story.mediaUrl).trim()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline break-all"
+                >
+                  Abrir a mídia diretamente
+                </a>
+              </div>
             ) : (
               <a
-                href={story.mediaUrl}
+                href={String(story.mediaUrl).trim()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
               >
                 <img
-                  src={story.mediaUrl}
+                  src={String(story.mediaUrl).trim()}
                   alt={story.title || `Imagem enviada por ${story.author}`}
                   loading="lazy"
-                  className="w-full max-h-[420px] object-cover transition-transform duration-300 hover:scale-[1.02]"
+                  onError={() =>
+                    setMediaErrors((current) => ({
+                      ...current,
+                      [story.id]: true,
+                    }))
+                  }
+                  className="block w-full h-auto max-h-[420px] object-cover transition-transform duration-300 hover:scale-[1.02]"
                 />
               </a>
             )}
+          </div>
+        ) : null}
           </div>
         )}
       </div>
