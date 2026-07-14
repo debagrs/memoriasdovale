@@ -362,7 +362,9 @@ const festivalStories = approvedItems.filter((item) => {
         Nenhuma história do Festival cadastrada ainda. Compartilhe a sua
         lembrança!
       </p>
+   
     </div>
-  )}
+  </section>
 </div>
-      </section>
+  );
+}
