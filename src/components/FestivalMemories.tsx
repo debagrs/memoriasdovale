@@ -365,3 +365,4 @@ const festivalStories = approvedItems.filter((item) => {
     </div>
   )}
 </div>
+      </section>
