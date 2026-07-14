@@ -12,10 +12,8 @@ import {
   TrendingUp,
   Users,
   Award,
-  Play,
-  FileText,
-  ExternalLink
-} from 'lucide-react';;
+  Play
+} from 'lucide-react';
 
 interface FestivalMemoriesProps {
   approvedItems: CommunityItem[];
