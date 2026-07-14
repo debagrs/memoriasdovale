@@ -314,8 +314,6 @@ const festivalStories = approvedItems.filter((item) => {
             )}
           </div>
         ) : null}
-          </div>
-        )}
       </div>
 
       <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs font-sans text-stone-500">
