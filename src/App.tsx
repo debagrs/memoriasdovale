@@ -85,19 +85,42 @@ export default function App() {
     fetchMemories();
   }, []);
 
-  const handleUpdateStatus = async (id: string, newStatus: StoryStatus) => {
-    const updated = items.map(item => {
-      if (item.id === id) {
-        return { ...item, status: newStatus };
-      }
-      return item;
-    });
-    setItems(updated);
-    if (supabase) {
-      const { error } = await supabase.from('memories').update({ status: newStatus }).eq('id', id);
-      if (error) setSyncError(`Erro ao atualizar status: ${error.message}`);
-    }
-  };
+  const handleUpdateStatus = async (
+  id: string,
+  newStatus: StoryStatus
+) => {
+  setSyncError('');
+
+  if (!supabase) {
+    setSyncError(
+      'Supabase não configurado. A alteração não pôde ser salva.'
+    );
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('memories')
+    .update({ status: newStatus })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Erro ao atualizar status:', error);
+
+    setSyncError(
+      `Não foi possível salvar a aprovação: ${error.message}`
+    );
+
+    return;
+  }
+
+  setItems((currentItems) =>
+    currentItems.map((item) =>
+      item.id === id ? mapDbToItem(data) : item
+    )
+  );
+};
 
   const handleEditItem = async (id: string, updatedFields: Partial<CommunityItem>) => {
     const updated = items.map(item => {
