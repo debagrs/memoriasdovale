@@ -389,3 +389,4 @@ const festivalStories = approvedItems.filter((item) => {
     </div>
   );
 }
+
