@@ -15,23 +15,7 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
   // Filter approved community items specific to the classical music festival
- const normalizeText = (value = '') =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .toLowerCase();
-
-const festivalStories = approvedItems.filter((item) => {
-  const category = normalizeText(item.category);
-
-  return (
-    item.type === 'festival' ||
-    category.includes('musica') ||
-    category.includes('festival')
-  );
-});
-
+ const festivalStories = approvedItems;
   // Custom data art calculation - finding max value for charts scaling
   const maxStudents = Math.max(...FESTIVAL_HISTORY.map(f => f.students));
   const maxConcerts = Math.max(...FESTIVAL_HISTORY.map(f => f.concerts));
