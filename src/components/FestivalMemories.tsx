@@ -2,7 +2,20 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CommunityItem, FestivalYear } from '../types';
 import { FESTIVAL_HISTORY } from '../data';
-import { Music, Eye, Calendar, Sparkles, BookOpen, Volume2, TrendingUp, Users, Award, Play } from 'lucide-react';
+import {
+  Music,
+  Eye,
+  Calendar,
+  Sparkles,
+  BookOpen,
+  Volume2,
+  TrendingUp,
+  Users,
+  Award,
+  Play,
+  FileText,
+  ExternalLink
+} from 'lucide-react';;
 
 interface FestivalMemoriesProps {
   approvedItems: CommunityItem[];
