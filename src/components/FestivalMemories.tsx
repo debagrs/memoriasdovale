@@ -242,10 +242,81 @@ const festivalStories = approvedItems.filter((item) => {
                   {story.title}
                 </h4>
 
-                <p className="text-xs text-stone-600 leading-relaxed font-sans font-light">
-                  {story.content}
-                </p>
-              </div>
+              {/* Mídia enviada pela comunidade */}
+{story.mediaUrl && (
+  <div className="mt-5 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
+    {story.mediaType === 'image' && (
+      <a
+        href={story.mediaUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+        aria-label={`Abrir imagem do relato ${story.title}`}
+      >
+        <img
+          src={story.mediaUrl}
+          alt={story.title || `Imagem enviada por ${story.author}`}
+          loading="lazy"
+          className="w-full max-h-[420px] object-cover transition-transform duration-300 hover:scale-[1.02]"
+        />
+      </a>
+    )}
+
+    {story.mediaType === 'video' && (
+      <video
+        controls
+        preload="metadata"
+        className="w-full max-h-[460px] bg-black"
+      >
+        <source src={story.mediaUrl} />
+        Seu navegador não consegue reproduzir este vídeo.
+      </video>
+    )}
+
+    {story.mediaType === 'audio' && (
+      <div className="p-4 bg-stone-50">
+        <audio controls preload="metadata" className="w-full">
+          <source src={story.mediaUrl} />
+          Seu navegador não consegue reproduzir este áudio.
+        </audio>
+      </div>
+    )}
+
+    {story.mediaType === 'document' && (
+      <a
+        href={story.mediaUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-between gap-3 p-4 bg-stone-50 text-stone-700 hover:bg-stone-100 transition"
+      >
+        <span className="flex items-center gap-2 min-w-0">
+          <FileText className="w-5 h-5 text-olive-700 shrink-0" />
+          <span className="text-xs font-mono truncate">
+            {story.mediaFileName || 'Abrir documento da memória'}
+          </span>
+        </span>
+
+        <ExternalLink className="w-4 h-4 shrink-0" />
+      </a>
+    )}
+
+    {!story.mediaType && (
+      <a
+        href={story.mediaUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
+        <img
+          src={story.mediaUrl}
+          alt={story.title || `Imagem enviada por ${story.author}`}
+          loading="lazy"
+          className="w-full max-h-[420px] object-cover"
+        />
+      </a>
+    )}
+  </div>
+)}
 
               {/* Sound Teaser Player */}
               <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs font-sans text-stone-500">
