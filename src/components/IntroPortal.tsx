@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Music, MapPin, Sparkles, BookOpen, Heart, Activity, ShieldAlert, ArrowRight, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { Volume2, VolumeX, Music, MapPin, Sparkles, BookOpen, Archive, Heart, Activity, ShieldAlert, ArrowRight, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 
 interface IntroPortalProps {
   onNavigate: (tab: string) => void;
@@ -13,6 +13,7 @@ const ICON_MAP = {
   MapPin: MapPin,
   Music: Music,
   BookOpen: BookOpen,
+  Archive: Archive,
   Sparkles: Sparkles,
   ShieldAlert: ShieldAlert,
 };
@@ -45,7 +46,7 @@ const SLIDES = [
   },
   {
     id: 2,
-    image: 'images/hero_landscape.png',
+    image: '/images/hero_landscape.png',
     tag: 'O calor do colo dos avós',
     title: 'Carinho e caminhada nas ruas de pedra',
     description: 'Descubra a história oral e os costumes moldados pelas videiras antigas da Quarta Colônia. Cada capitel, mirante e estrada rural conta o destino de gerações de imigrantes vênetos.',
@@ -66,20 +67,19 @@ const SLIDES = [
       { text: 'Painel de Curadoria', tab: 'curadoria', type: 'secondary', icon: 'Sparkles' },
       { text: 'Retornar ao Mapa', tab: 'cartografia', type: 'tertiary', icon: 'MapPin' }
     ]
-  }
-
-    {
+  },
+  {
     id: 4,
-    image: '/images/images/hero_church.png',
-  tag: 'Patrimônio, arquitetura e cartografias afetivas',
-  title: 'Cada lugar guarda histórias que continuam acontecendo.',
-  description:
-  'Igrejas, praças, casas, paisagens e caminhos revelam as camadas da memória coletiva. Explore registros históricos, narrativas da comunidade e novas conexões entre passado, presente e futuro.',
-  buttons: [
-  { text: 'Explorar Lugares', tab: 'cartografia', type: 'primary', icon: 'MapPin' },
-  { text: 'Ver Acervo', tab: 'acervo', type: 'secondary', icon: 'Archive' },
-  { text: 'Compartilhar Memória', tab: 'colaborar', type: 'tertiary', icon: 'BookOpen' }
-]
+    image: '/images/hero_church.png',
+    tag: 'Patrimônio, arquitetura e cartografias afetivas',
+    title: 'Cada lugar guarda histórias que continuam acontecendo.',
+    description:
+      'Igrejas, praças, casas, paisagens e caminhos revelam as camadas da memória coletiva. Explore registros históricos, narrativas da comunidade e novas conexões entre passado, presente e futuro.',
+    buttons: [
+      { text: 'Explorar Lugares', tab: 'cartografia', type: 'primary', icon: 'MapPin' },
+      { text: 'Ver Acervo', tab: 'acervo', type: 'secondary', icon: 'Archive' },
+      { text: 'Compartilhar Memória', tab: 'colaborar', type: 'tertiary', icon: 'BookOpen' }
+    ]
   }
 ];
 
