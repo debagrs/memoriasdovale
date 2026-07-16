@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { INITIAL_COMMUNITY_ITEMS } from './data';
@@ -187,17 +186,20 @@ export default function App() {
           <div
             id="brand-logo"
             onClick={() => setActiveTab('portal')}
-            className="flex items-center gap-2.5 cursor-pointer select-none group"
+            className="flex items-center gap-3 cursor-pointer select-none group"
           >
-            <div className="p-2 bg-olive-900 text-gold-400 rounded-xl group-hover:scale-105 duration-300">
-              <Compass className="w-5 h-5 animate-pulse" />
-            </div>
+            <img
+              src="/images/logo_vv_mm.png"
+              alt="Símbolo de Vale Vêneto"
+              className="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+
             <div className="text-left font-serif">
               <span className="block font-black text-stone-900 tracking-tight text-base sm:text-lg leading-none">
                 Vale Vêneto
               </span>
-              <span className="block text-[9px] uppercase tracking-wider text-olive-700 font-sans font-semibold">
-                Memória, Música & Cartografia
+              <span className="block text-[9px] sm:text-[10px] uppercase tracking-wider text-olive-700 font-sans font-semibold">
+                Música e Memória
               </span>
             </div>
           </div>
