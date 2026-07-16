@@ -21,9 +21,9 @@ const ICON_MAP = {
 const SLIDES = [
   {
     id: 0,
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Monumento_a_%22Nono_e_a_Nona%22_en_Vale_Veneto.jpg/960px-Monumento_a_%22Nono_e_a_Nona%22_en_Vale_Veneto.jpg',
-    tag: 'Design, Música e Memória',
-    title: 'Onde os montes sussurram memorabilias e canções.',
+    image: '/images/hero_community.png',
+    tag: 'Design, Cartografias, Música e Memória',
+    title: 'Onde os montes sussurram memórias e canções.',
     description: 'Vale Vêneto, aninhado entre as escarpas verdes da Quarta Colônia no sul do Brasil. Um palco-santuário imorredouro onde a memória da imigração italiana se funde com a alta cultura musical das Américas no inverno.',
     buttons: [
       { text: 'Navegar Cartografia Afetiva', tab: 'cartografia', type: 'primary', icon: 'MapPin' },
@@ -35,7 +35,7 @@ const SLIDES = [
     id: 1,
     image: '/images/hero_music.png',
     tag: 'Festival Internacional de Inverno',
-    title: 'A harmonia clássica ressoando sob o frio colonial.',
+    title: 'Somos pequenos diante de tanta hospitalidade e harmonia',
     description: 'Durante o inverno, as ruelas silenciosas ganham vida com violinos, violoncelos e orquestras. Uma fusão mágica entre o rigor acadêmico e a hospitalidade calorosa das nossas capelas de pedra.',
     buttons: [
       { text: 'Explorar Festival de Música', tab: 'festival', type: 'primary', icon: 'Music' },
@@ -45,9 +45,9 @@ const SLIDES = [
   },
   {
     id: 2,
-    image: '/images/hero_vineyard.png',
-    tag: 'Paisagem Cultural & Heritage',
-    title: 'O aroma da uva e os caminhos de pedra vermelha.',
+    image: 'images/hero_landscape.png',
+    tag: 'O calor do colo dos avós',
+    title: 'Carinho e caminhada nas ruas de pedra',
     description: 'Descubra a história oral e os costumes moldados pelas videiras antigas da Quarta Colônia. Cada capitel, mirante e estrada rural conta o destino de gerações de imigrantes vênetos.',
     buttons: [
       { text: 'Explorar Rotas Históricas', tab: 'cartografia', type: 'primary', icon: 'MapPin' },
@@ -57,15 +57,29 @@ const SLIDES = [
   },
   {
     id: 3,
-    image: '/images/hero_memory.png',
-    tag: 'Arquivo de Memória Coletiva',
+    image: '/images/hero_vineyard.png',
+    tag: 'Arquivo de Memória Coletiva, com cartografias, desenhos poéticos dos lugares',
     title: 'Objetos, vozes e registros do nosso passado vivo.',
-    description: 'Senhores narrando causos em dialeto Talian, receitas de família passadas no fogão a lenha, e retratos antigos digitalizados. Um patrimônio sustentado ativamente pela comunidade.',
+    description: 'Muitos pontos de vista e experiências compartilhadas num grande mapa vivo de memórias. Um patrimônio sustentado ativamente pela comunidade.',
     buttons: [
       { text: 'Enviar Minha História', tab: 'colaborar', type: 'primary', icon: 'BookOpen' },
       { text: 'Painel de Curadoria', tab: 'curadoria', type: 'secondary', icon: 'Sparkles' },
       { text: 'Retornar ao Mapa', tab: 'cartografia', type: 'tertiary', icon: 'MapPin' }
     ]
+  }
+
+    {
+    id: 4,
+    image: '/images/images/hero_church.png',
+  tag: 'Patrimônio, arquitetura e cartografias afetivas',
+  title: 'Cada lugar guarda histórias que continuam acontecendo.',
+  description:
+  'Igrejas, praças, casas, paisagens e caminhos revelam as camadas da memória coletiva. Explore registros históricos, narrativas da comunidade e novas conexões entre passado, presente e futuro.',
+  buttons: [
+  { text: 'Explorar Lugares', tab: 'cartografia', type: 'primary', icon: 'MapPin' },
+  { text: 'Ver Acervo', tab: 'acervo', type: 'secondary', icon: 'Archive' },
+  { text: 'Compartilhar Memória', tab: 'colaborar', type: 'tertiary', icon: 'BookOpen' }
+]
   }
 ];
 
