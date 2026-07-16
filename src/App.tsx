@@ -186,19 +186,20 @@ export default function App() {
           <div
             id="brand-logo"
             onClick={() => setActiveTab('portal')}
-            className="flex items-center gap-3 cursor-pointer select-none group"
+            className="flex items-center gap-4 cursor-pointer select-none group"
           >
             <img
               src="/images/logo_vv_mm.png"
               alt="Símbolo de Vale Vêneto"
-              className="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-[54px] sm:h-[62px] lg:h-[68px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
 
-            <div className="text-left font-serif">
-              <span className="block font-black text-stone-900 tracking-tight text-base sm:text-lg leading-none">
+            <div className="text-left leading-none">
+              <span className="block font-serif font-black text-stone-900 tracking-tight text-lg sm:text-xl">
                 Vale Vêneto
               </span>
-              <span className="block text-[9px] sm:text-[10px] uppercase tracking-wider text-olive-700 font-sans font-semibold">
+
+              <span className="block mt-1 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-olive-700 font-sans font-semibold">
                 Música e Memória
               </span>
             </div>
@@ -361,8 +362,8 @@ export default function App() {
             <span className="block text-[10px] font-mono text-stone-600 uppercase tracking-widest font-bold">Patrocínio & Gestão</span>
             <div className="flex flex-col gap-1 text-xs text-stone-300 font-light">
               <p>Universidade Federal de Santa Maria (UFSM)</p>
+               <p>Desenho Industrial UFSM</p>
               <p>Comunidade Organizada de Vale Vêneto, RS</p>
-              <p>Prefeitura Municipal de Silveira Martins</p>
             </div>
           </div>
 
