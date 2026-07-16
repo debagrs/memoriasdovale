@@ -35,7 +35,7 @@ const SLIDES = [
   {
     id: 1,
     image: '/images/hero_music.png',
-    tag: 'Festival Internacional de Inverno',
+    tag: 'O encantamento da descoberta',
     title: 'Somos pequenos diante de tanta hospitalidade e harmonia',
     description: 'Durante o inverno, as ruelas silenciosas ganham vida com violinos, violoncelos e orquestras. Uma fusão mágica entre o rigor acadêmico e a hospitalidade calorosa das nossas capelas de pedra.',
     buttons: [
@@ -59,7 +59,7 @@ const SLIDES = [
   {
     id: 3,
     image: '/images/hero_vineyard.png',
-    tag: 'Arquivo de Memória Coletiva, com cartografias, desenhos poéticos dos lugares',
+    tag: 'Arquivo de Memória Coletiva, com a poética dos lugares',
     title: 'Objetos, vozes e registros do nosso passado vivo.',
     description: 'Muitos pontos de vista e experiências compartilhadas num grande mapa vivo de memórias. Um patrimônio sustentado ativamente pela comunidade.',
     buttons: [
