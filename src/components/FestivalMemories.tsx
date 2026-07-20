@@ -23,33 +23,14 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
 
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
-  // Exibe memórias vinculadas ao Festival independentemente da categoria cultural.
-  // As categorias (Imigração, Gastronomia, Música Clássica, Religião e Natureza)
-  // funcionam como classificação temática e não devem impedir a exibição.
-  const normalizeText = (value: unknown = '') =>
-    String(value ?? '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .trim()
-      .toLowerCase();
-
-  const festivalStories = approvedItems.filter((item) => {
-    const type = normalizeText(item.type);
-    const category = normalizeText(item.category);
-
-    const isFestivalRecord =
-      type === 'festival' ||
-      type.includes('festival') ||
-      type.includes('memoria do festival');
-
-    // Compatibilidade com registros antigos que possam ter sido salvos
-    // apenas pela categoria, antes da padronização do campo "type".
-    const isLegacyFestivalRecord =
-      category.includes('musica') ||
-      category.includes('festival');
-
-    return isFestivalRecord || isLegacyFestivalRecord;
+  // Todas as memórias aprovadas aparecem em “Falas da Comunidade”.
+  // Tipo e categoria continuam visíveis como classificação, mas não ocultam registros.
+  const festivalStories = [...approvedItems].sort((a, b) => {
+    const dateA = new Date(a.date || 0).getTime();
+    const dateB = new Date(b.date || 0).getTime();
+    return dateB - dateA;
   });
+
   // Custom data art calculation - finding max value for charts scaling
   const maxStudents = Math.max(...FESTIVAL_HISTORY.map(f => f.students));
   const maxConcerts = Math.max(...FESTIVAL_HISTORY.map(f => f.concerts));
