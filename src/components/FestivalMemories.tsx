@@ -23,23 +23,33 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
 
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
-  // Filter approved community items specific to the classical music festival
-const normalizeText = (value = '') =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .toLowerCase();
+  // Exibe memórias vinculadas ao Festival independentemente da categoria cultural.
+  // As categorias (Imigração, Gastronomia, Música Clássica, Religião e Natureza)
+  // funcionam como classificação temática e não devem impedir a exibição.
+  const normalizeText = (value: unknown = '') =>
+    String(value ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
 
-const festivalStories = approvedItems.filter((item) => {
-  const category = normalizeText(item.category);
+  const festivalStories = approvedItems.filter((item) => {
+    const type = normalizeText(item.type);
+    const category = normalizeText(item.category);
 
-  return (
-    item.type === 'festival' ||
-    category.includes('musica') ||
-    category.includes('festival')
-  );
-});
+    const isFestivalRecord =
+      type === 'festival' ||
+      type.includes('festival') ||
+      type.includes('memoria do festival');
+
+    // Compatibilidade com registros antigos que possam ter sido salvos
+    // apenas pela categoria, antes da padronização do campo "type".
+    const isLegacyFestivalRecord =
+      category.includes('musica') ||
+      category.includes('festival');
+
+    return isFestivalRecord || isLegacyFestivalRecord;
+  });
   // Custom data art calculation - finding max value for charts scaling
   const maxStudents = Math.max(...FESTIVAL_HISTORY.map(f => f.students));
   const maxConcerts = Math.max(...FESTIVAL_HISTORY.map(f => f.concerts));
