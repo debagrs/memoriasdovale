@@ -176,7 +176,7 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
       {/* Interactive History Timeline Segment */}
       <section className="space-y-6">
         <div className="space-y-1">
-          <span className="text-xs text-olive-700 font-mono tracking-widest uppercase">Cronologia & Ciência de Dados</span>
+          <span className="text-xs text-olive-700 font-mono tracking-widest uppercase">Cronologia & Dados</span>
           <h3 className="text-2xl font-serif tracking-tight text-stone-900 font-bold">Resgate Histórico das Edições</h3>
         </div>
 
