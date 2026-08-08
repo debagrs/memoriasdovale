@@ -9,7 +9,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Majestosa igreja de pedra construída pelos imigrantes italianos a partir de 1888. Coração espiritual e arquitetônico de Vale Vêneto.',
     x: 50,
     y: 35,
-    audioSignature: 'Sinos de bronze ressonando no vale às 12h e às 18h'
+    audioSignature: 'Sinos de bronze ressonando no vale às 12h e às 18h',
+    audioUrl: '/audio/igreja-corpus-domini-sinos.mp3',
+    audioLabel: 'Sinos e ambiência do vale'
   },
   {
     id: 'ref-paroquia',
@@ -18,7 +20,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Ponto de encontro comunitário onde tradicionalmente ocorrem os almoços típicos italianos durante a Semana Cultural, com sopa de capeletti e risoto.',
     x: 48,
     y: 50,
-    audioSignature: 'Sussurros de risadas, brindes de vinho e talheres em festa'
+    audioSignature: 'Sussurros de risadas, brindes de vinho e talheres em festa',
+    audioUrl: '/audio/casa-paroquial-encontro.mp3',
+    audioLabel: 'Encontro comunitário e pequenos brindes'
   },
   {
     id: 'ref-casarao',
@@ -27,7 +31,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Guardião de relíquias dos pioneiros que retratam o cotidiano agrícola, as ferramentas e a fé dos primeiros colonizadores.',
     x: 32,
     y: 42,
-    audioSignature: 'Estalar de tábuas de madeira antiga sob passos atentos'
+    audioSignature: 'Estalar de tábuas de madeira antiga sob passos atentos',
+    audioUrl: '/audio/casarao-museus-madeira.mp3',
+    audioLabel: 'Tábuas antigas, passos e rangidos'
   },
   {
     id: 'ref-sitio-fontes',
@@ -36,7 +42,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Recanto de paz e mata nativa protegido pelas rochas, onde águas cristalinas correm em silêncio de oração.',
     x: 65,
     y: 20,
-    audioSignature: 'Gotejar rítmico de água limpa sobre pedras cobertas de musgo'
+    audioSignature: 'Gotejar rítmico de água limpa sobre pedras cobertas de musgo',
+    audioUrl: '/audio/gruta-lourdes-agua.mp3',
+    audioLabel: 'Água corrente e gotejos da gruta'
   },
   {
     id: 'ref-ufsm-festival',
@@ -45,7 +53,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Salas e casarões que se convertem em salas de masterclasses e câmeras de ensaio durante o Festival de Inverno.',
     x: 40,
     y: 68,
-    audioSignature: 'Acordes dissonantes de piano e sopros flutuando no ar de inverno'
+    audioSignature: 'Acordes dissonantes de piano e sopros flutuando no ar de inverno',
+    audioUrl: '/audio/festival-ensaios-inverno.mp3',
+    audioLabel: 'Ensaio instrumental original e ambiência de inverno'
   },
   {
     id: 'ref-belvedere',
@@ -54,7 +64,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Ponto culminante que oferece uma visão panorâmica e deslumbrante dos montes verdejantes que formam o vale.',
     x: 82,
     y: 45,
-    audioSignature: 'Vento forte de inverno soprando pelas copas dos pinhais'
+    audioSignature: 'Vento forte de inverno soprando pelas copas dos pinhais',
+    audioUrl: '/audio/mirante-cerro-vento-pinhais.mp3',
+    audioLabel: 'Vento no mirante e nas copas dos pinhais'
   },
   {
     id: 'ref-piazza',
@@ -63,7 +75,9 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     description: 'Praça central arborizada, pavimentada em pedra paralelepípedo, onde os moradores se reúnem ao entardecer.',
     x: 52,
     y: 60,
-    audioSignature: 'Palavras em dialeto Talian entoadas por vozes senhoriais'
+    audioSignature: 'Pássaros ao entardecer e passos suaves sobre a pedra da praça',
+    audioUrl: '/audio/piazza-entardecer-passaros.mp3',
+    audioLabel: 'Entardecer na praça com pássaros e passos'
   }
 ];
 
