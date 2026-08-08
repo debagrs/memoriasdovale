@@ -1,13 +1,5 @@
 import { CommunityItem, FestivalYear, MentalMapReference } from './types';
 
-import igrejaCorpusDominiSinos from './assets/audio/igreja-corpus-domini-sinos.mp3';
-import casaParoquialEncontro from './assets/audio/casa-paroquial-encontro.mp3';
-import casaraoMuseusMadeira from './assets/audio/casarao-museus-madeira.mp3';
-import grutaLourdesAgua from './assets/audio/gruta-lourdes-agua.mp3';
-import festivalEnsaiosInverno from './assets/audio/festival-ensaios-inverno.mp3';
-import miranteCerroVentoPinhais from './assets/audio/mirante-cerro-vento-pinhais.mp3';
-import piazzaEntardecerPassaros from './assets/audio/piazza-entardecer-passaros.mp3';
-
 // Pre-loaded historic locations to anchor our interactive mental map
 export const HISTORIC_LOCATIONS: MentalMapReference[] = [
   {
@@ -18,7 +10,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 50,
     y: 35,
     audioSignature: 'Sinos de bronze ressonando no vale às 12h e às 18h',
-    audioUrl: igrejaCorpusDominiSinos,
+    audioUrl: '/audio/igreja-corpus-domini-sinos.mp3',
     audioLabel: 'Sinos e ambiência do vale'
   },
   {
@@ -29,7 +21,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 48,
     y: 50,
     audioSignature: 'Sussurros de risadas, brindes de vinho e talheres em festa',
-    audioUrl: casaParoquialEncontro,
+    audioUrl: '/audio/casa-paroquial-encontro.mp3',
     audioLabel: 'Encontro comunitário e pequenos brindes'
   },
   {
@@ -40,7 +32,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 32,
     y: 42,
     audioSignature: 'Estalar de tábuas de madeira antiga sob passos atentos',
-    audioUrl: casaraoMuseusMadeira,
+    audioUrl: '/audio/casarao-museus-madeira.mp3',
     audioLabel: 'Tábuas antigas, passos e rangidos'
   },
   {
@@ -51,7 +43,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 65,
     y: 20,
     audioSignature: 'Gotejar rítmico de água limpa sobre pedras cobertas de musgo',
-    audioUrl: grutaLourdesAgua,
+    audioUrl: '/audio/gruta-lourdes-agua.mp3',
     audioLabel: 'Água corrente e gotejos da gruta'
   },
   {
@@ -62,7 +54,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 40,
     y: 68,
     audioSignature: 'Acordes dissonantes de piano e sopros flutuando no ar de inverno',
-    audioUrl: festivalEnsaiosInverno,
+    audioUrl: '/audio/festival-ensaios-inverno.mp3',
     audioLabel: 'Ensaio instrumental original e ambiência de inverno'
   },
   {
@@ -73,7 +65,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 82,
     y: 45,
     audioSignature: 'Vento forte de inverno soprando pelas copas dos pinhais',
-    audioUrl: miranteCerroVentoPinhais,
+    audioUrl: '/audio/mirante-cerro-vento-pinhais.mp3',
     audioLabel: 'Vento no mirante e nas copas dos pinhais'
   },
   {
@@ -84,7 +76,7 @@ export const HISTORIC_LOCATIONS: MentalMapReference[] = [
     x: 52,
     y: 60,
     audioSignature: 'Pássaros ao entardecer e passos suaves sobre a pedra da praça',
-    audioUrl: piazzaEntardecerPassaros,
+    audioUrl: '/audio/piazza-entardecer-passaros.mp3',
     audioLabel: 'Entardecer na praça com pássaros e passos'
   }
 ];
