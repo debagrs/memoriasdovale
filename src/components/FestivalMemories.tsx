@@ -82,6 +82,55 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
                 <p className="text-xs text-stone-600 leading-relaxed font-sans font-light">
                   {story.content}
                 </p>
+
+                {/* Mídia enviada pela comunidade — preserva fotos, vídeos e documentos no Festival */}
+                {story.mediaUrl && story.mediaType === 'image' && (
+                  <div className="overflow-hidden rounded-xl border border-stone-200/60 bg-stone-50">
+                    <img
+                      src={story.mediaUrl}
+                      alt={story.mediaFileName || `Imagem da memória ${story.title}`}
+                      className="w-full max-h-[420px] object-contain bg-stone-50"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                    {story.mediaFileName && (
+                      <p className="px-3 py-2 font-mono text-[9px] text-stone-400 truncate border-t border-stone-200/50">
+                        {story.mediaFileName}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {story.mediaUrl && story.mediaType === 'video' && (
+                  <div className="overflow-hidden rounded-xl border border-stone-200/60 bg-black">
+                    <video
+                      src={story.mediaUrl}
+                      controls
+                      preload="metadata"
+                      playsInline
+                      className="w-full max-h-[520px] bg-black"
+                      aria-label={`Vídeo da memória ${story.title}`}
+                    >
+                      Seu navegador não suporta reprodução de vídeo.
+                    </video>
+                    {story.mediaFileName && (
+                      <p className="px-3 py-2 font-mono text-[9px] text-stone-400 truncate bg-white border-t border-stone-200/50">
+                        {story.mediaFileName}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {story.mediaUrl && story.mediaType === 'document' && (
+                  <a
+                    href={story.mediaUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center rounded-lg border border-stone-200 px-3 py-2 text-[10px] font-mono uppercase tracking-wide text-stone-600 hover:border-gold-400 transition"
+                  >
+                    Abrir documento{story.mediaFileName ? ` — ${story.mediaFileName}` : ''}
+                  </a>
+                )}
               </div>
 
               {/* Sound Teaser Player */}
