@@ -1,233 +1,263 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { CommunityItem, MentalMapReference } from '../types';
+import { AnimatePresence, motion } from 'motion/react';
+import {
+  Calendar,
+  Compass,
+  Filter,
+  MapPin,
+  Music,
+  Radar,
+  Volume2,
+} from 'lucide-react';
+
 import { HISTORIC_LOCATIONS } from '../data';
-import { Compass, Music, MapPin, Eye, Filter, Calendar, Tag, User, Sparkles, Volume2 } from 'lucide-react';
+import { CommunityItem, MentalMapReference } from '../types';
 
 interface AcousticCartographyProps {
   approvedItems: CommunityItem[];
 }
 
-export default function AcousticCartography({ approvedItems }: AcousticCartographyProps) {
-  const [selectedAnchor, setSelectedAnchor] = useState<MentalMapReference | null>(null);
+type FilterValue =
+  | 'todos'
+  | 'historico'
+  | 'musica'
+  | 'natureza'
+  | 'religiao'
+  | 'gastronomia';
+
+const filters: Array<{ value: FilterValue; label: string }> = [
+  { value: 'todos', label: 'Todos os Marcos' },
+  { value: 'historico', label: 'Marcos Históricos' },
+  { value: 'musica', label: 'Espaços de Música' },
+  { value: 'natureza', label: 'Zonas Verdes / Natureza' },
+  { value: 'religiao', label: 'Fé e Cultura' },
+  { value: 'gastronomia', label: 'Cozinha Colonial' },
+];
+
+export default function AcousticCartography({
+  approvedItems,
+}: AcousticCartographyProps) {
+  const [selectedAnchor, setSelectedAnchor] =
+    useState<MentalMapReference | null>(null);
   const [selectedPin, setSelectedPin] = useState<CommunityItem | null>(null);
-  const [activeFilter, setActiveFilter] = useState<string>('todos');
+  const [activeFilter, setActiveFilter] = useState<FilterValue>('todos');
 
-  // Filter category options
-  const filterOptions = [
-    { value: 'todos', label: 'Todos os Marcos' },
-    { value: 'historico', label: 'Marcos Históricos' },
-    { value: 'musica', label: 'Espaços de Música' },
-    { value: 'natureza', label: 'Zonas Verdes / Natureza' },
-    { value: 'religiao', label: 'Fé e Cultura' },
-    { value: 'gastronomia', label: 'Cozinha Colonial' },
-  ];
-
-  // Geolocation database filter logic
-  const approvedMapPins = approvedItems.filter(item => 
-    item.type === 'ponto_mapa' && 
-    item.latX !== undefined && 
-    item.latY !== undefined
+  const mapItems = approvedItems.filter(
+    (item) =>
+      item.type === 'ponto_mapa' &&
+      item.latX !== undefined &&
+      item.latY !== undefined,
   );
 
-  const handleSelectAnchor = (anchor: MentalMapReference) => {
+  const selectAnchor = (anchor: MentalMapReference) => {
     setSelectedPin(null);
     setSelectedAnchor(anchor);
   };
 
-  const handleSelectPin = (pin: CommunityItem) => {
+  const selectPin = (pin: CommunityItem) => {
     setSelectedAnchor(null);
     setSelectedPin(pin);
   };
 
-  const getPinColor = (category: string) => {
+  const pinColor = (category: string) => {
     switch (category.toLowerCase()) {
-      case 'gastronomia': return 'bg-amber-500 shadow-amber-500/30 text-amber-950 border-amber-600';
-      case 'música clássica': case 'musica': return 'bg-rose-500 shadow-rose-500/30 text-rose-950 border-rose-600';
-      case 'natureza': return 'bg-emerald-500 shadow-emerald-500/30 text-emerald-950 border-emerald-600';
-      case 'religião': return 'bg-indigo-500 shadow-indigo-500/30 text-indigo-950 border-indigo-600';
-      case 'imigração': return 'bg-olive-600 shadow-olive-600/30 text-olive-100 border-olive-700';
-      default: return 'bg-stone-500 shadow-stone-500/30 text-stone-100 border-stone-600';
+      case 'gastronomia':
+        return 'bg-amber-500 shadow-amber-500/30 text-amber-950 border-amber-600';
+      case 'música clássica':
+      case 'musica':
+        return 'bg-rose-500 shadow-rose-500/30 text-rose-950 border-rose-600';
+      case 'natureza':
+        return 'bg-emerald-500 shadow-emerald-500/30 text-emerald-950 border-emerald-600';
+      case 'religião':
+        return 'bg-indigo-500 shadow-indigo-500/30 text-indigo-950 border-indigo-600';
+      case 'imigração':
+        return 'bg-olive-600 shadow-olive-600/30 text-olive-100 border-olive-700';
+      default:
+        return 'bg-stone-500 shadow-stone-500/30 text-stone-100 border-stone-600';
     }
   };
 
-  const isAnchorVisible = (anchor: MentalMapReference) => {
-    if (activeFilter === 'todos') return true;
-    if (activeFilter === 'historico' && anchor.type === 'historical') return true;
-    if (activeFilter === 'musica' && anchor.type === 'music') return true;
-    if (activeFilter === 'natureza' && anchor.type === 'nature') return true;
-    if (activeFilter === 'religiao' && anchor.type === 'historical') return true; // Synced with religious sites
-    return false;
+  const showAnchor = (anchor: MentalMapReference) =>
+    activeFilter === 'todos' ||
+    (activeFilter === 'historico' && anchor.type === 'historical') ||
+    (activeFilter === 'musica' && anchor.type === 'music') ||
+    (activeFilter === 'natureza' && anchor.type === 'nature') ||
+    (activeFilter === 'religiao' && anchor.type === 'historical');
+
+  const showCommunityPin = (item: CommunityItem) => {
+    const category = item.category.toLowerCase();
+    return (
+      activeFilter === 'todos' ||
+      (activeFilter === 'gastronomia' && category === 'gastronomia') ||
+      (activeFilter === 'musica' && category === 'música clássica') ||
+      (activeFilter === 'natureza' && category === 'natureza') ||
+      (activeFilter === 'religiao' && category === 'religião') ||
+      (activeFilter === 'historico' && category === 'imigração')
+    );
   };
 
-  const isPinVisible = (pin: CommunityItem) => {
-    if (activeFilter === 'todos') return true;
-    if (activeFilter === 'gastronomia' && pin.category.toLowerCase() === 'gastronomia') return true;
-    if (activeFilter === 'musica' && pin.category.toLowerCase() === 'música clássica') return true;
-    if (activeFilter === 'natureza' && pin.category.toLowerCase() === 'natureza') return true;
-    if (activeFilter === 'religiao' && pin.category.toLowerCase() === 'religião') return true;
-    if (activeFilter === 'historico' && pin.category.toLowerCase() === 'imigração') return true;
-    return false;
-  };
+  const hasUploadedAudio =
+    selectedPin?.mediaType === 'audio' && Boolean(selectedPin.mediaUrl);
 
   return (
     <div id="cartography-workspace" className="space-y-8">
-      {/* Editorial Title */}
-      <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
         <div className="space-y-1">
-          <span className="text-xs text-olive-700 font-mono tracking-widest uppercase">Cartografia Afetiva Interativa</span>
-          <h2 className="text-3xl font-serif text-stone-900 tracking-tight">O Mapa Mental de Vale Vêneto</h2>
-          <p className="text-sm font-sans text-stone-600 font-light max-w-xl">
-            Clique nos marcos de memória cadastrados pela comunidade e explore os sussurros acústicos e as pequenas crônicas históricas de cada pedaço de solo.
+          <span className="font-mono text-xs uppercase tracking-widest text-olive-700">
+            Cartografia Afetiva Interativa
+          </span>
+          <h2 className="font-serif text-3xl tracking-tight text-stone-900">
+            O Mapa Mental de Vale Vêneto
+          </h2>
+          <p className="max-w-xl font-sans text-sm font-light text-stone-600">
+            Clique nos marcos de memória cadastrados pela comunidade e explore
+            os sussurros acústicos e as pequenas crônicas históricas de cada
+            pedaço de solo.
           </p>
         </div>
 
-        {/* Filter Selection Panel */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <Filter className="w-4 h-4 text-stone-400 shrink-0" />
+        <div className="flex flex-wrap items-center gap-2">
+          <Filter className="h-4 w-4 shrink-0 text-stone-400" />
           <div className="flex flex-wrap gap-1">
-            {filterOptions.map(opt => (
+            {filters.map((filter) => (
               <button
-                key={opt.value}
-                id={`filter-${opt.value}`}
-                onClick={() => setActiveFilter(opt.value)}
-                className={`px-3 py-1.5 text-xs rounded-xl font-medium cursor-pointer transition-all ${
-                  activeFilter === opt.value
-                    ? 'bg-olive-800 text-stone-100 font-semibold'
-                    : 'bg-stone-100 hover:bg-stone-200 text-stone-600'
+                key={filter.value}
+                id={`filter-${filter.value}`}
+                type="button"
+                onClick={() => setActiveFilter(filter.value)}
+                className={`cursor-pointer rounded-xl px-3 py-1.5 text-xs font-medium transition-all ${
+                  activeFilter === filter.value
+                    ? 'bg-olive-800 font-semibold text-stone-100'
+                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >
-                {opt.label}
+                {filter.label}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Interactive Map Canvas Grid */}
-        <div className="lg:col-span-8 bg-stone-100 rounded-3xl border border-stone-200/50 p-4 relative min-h-[500px] flex items-center justify-center overflow-hidden shadow-inner">
-          
-          {/* Subtle grid mesh overlays representing data science structures */}
-          <div className="absolute inset-0 bg-[radial-gradient(#cad1ab_1px,transparent_1px)] [background-size:20px_20px] opacity-65 pointer-events-none" />
-          
-          {/* Artistic compass accent */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="relative flex min-h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-stone-200/50 bg-stone-100 p-4 shadow-inner lg:col-span-8">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#cad1ab_1px,transparent_1px)] [background-size:20px_20px] opacity-65" />
+
           <div className="absolute bottom-6 right-6 flex items-center gap-2 font-mono text-[10px] text-stone-400 opacity-60">
-            <Compass className="w-4.5 h-4.5 animate-[spin_10s_linear_infinite]" />
+            <Compass className="h-[18px] w-[18px] animate-[spin_10s_linear_infinite]" />
             <span>VALE COGNITIVO VÊNETO . ELEV 178m</span>
           </div>
 
-          <div className="absolute top-6 left-6 flex items-center gap-1.5 bg-white/70 backdrop-blur-md border border-stone-200/50 px-3 py-1.5 rounded-xl font-mono text-[9px] text-stone-500">
-            <span className="h-1.5 w-1.5 bg-gold-500 rounded-full"></span>
+          <div className="absolute left-6 top-6 flex items-center gap-1.5 rounded-xl border border-stone-200/50 bg-white/70 px-3 py-1.5 font-mono text-[9px] text-stone-500 backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
             <span>Marcos Principais</span>
-            <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full ml-2"></span>
+            <span className="ml-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
             <span>Estudantes / População</span>
           </div>
 
-          {/* SVG Map Canvas Topology Drawing Area */}
-          <div className="w-full h-full max-w-2xl aspect-[1.4/1] relative select-none">
-            {/* Visual background elements - Mountain range vectors sketched in pure CSS */}
-            <div className="absolute inset-x-0 top-12 h-2/5 opacity-5 pointer-events-none">
-              <svg viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg" className="w-full h-full fill-olive-900">
+          <div className="relative aspect-[1.4/1] h-full w-full max-w-2xl select-none">
+            <div className="pointer-events-none absolute inset-x-0 top-12 h-2/5 opacity-5">
+              <svg
+                viewBox="0 0 100 30"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-full w-full fill-olive-900"
+              >
                 <path d="M0,30 L20,10 L45,25 L75,5 L100,30 Z" />
               </svg>
             </div>
 
-            {/* Simulated Streams / River representing spatial boundaries */}
-            <div className="absolute inset-y-0 left-1/3 right-1/2 opacity-15 pointer-events-none">
-              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full stroke-blue-500 fill-none stroke-2 stroke-dasharray-[2,4]">
+            <div className="pointer-events-none absolute inset-y-0 left-1/3 right-1/2 opacity-15">
+              <svg
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-full w-full fill-none stroke-blue-500 stroke-2 stroke-dasharray-[2,4]"
+              >
                 <path d="M50,0 Q35,30 65,60 T40,100" />
               </svg>
             </div>
 
-            {/* Dynamic Rendering of Anchor Locations */}
-            {HISTORIC_LOCATIONS.map((loc) => {
-              if (!isAnchorVisible(loc)) return null;
-              const isSelected = selectedAnchor?.id === loc.id;
+            {HISTORIC_LOCATIONS.map((anchor) => {
+              if (!showAnchor(anchor)) return null;
+              const isSelected = selectedAnchor?.id === anchor.id;
+
               return (
                 <div
-                  key={loc.id}
-                  id={`anchor-${loc.id}`}
-                  style={{ left: `${loc.x}%`, top: `${loc.y}%` }}
-                  onClick={() => handleSelectAnchor(loc)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer"
+                  key={anchor.id}
+                  id={`anchor-${anchor.id}`}
+                  style={{ left: `${anchor.x}%`, top: `${anchor.y}%` }}
+                  onClick={() => selectAnchor(anchor)}
+                  className="absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
                 >
-                  <div className="relative group">
-                    {/* Ring ping overlay */}
+                  <div className="group relative">
                     {isSelected && (
-                      <span className="absolute -inset-2.5 rounded-full border-2 border-gold-500/30 animate-pulse"></span>
+                      <span className="absolute -inset-2.5 animate-pulse rounded-full border-2 border-gold-500/30" />
                     )}
-                    
-                    <div className={`p-2.5 rounded-full border duration-300 transform transition-all ${
-                      isSelected 
-                        ? 'bg-gold-500 border-gold-600 text-stone-950 scale-125' 
-                        : 'bg-white hover:bg-gold-50 hover:scale-110 border-stone-300 text-stone-700'
-                    }`}>
-                      {loc.type === 'music' ? (
-                        <Music className="w-4 h-4" />
+                    <div
+                      className={`rounded-full border p-2.5 transition-all duration-300 ${
+                        isSelected
+                          ? 'scale-125 border-gold-600 bg-gold-500 text-stone-950'
+                          : 'border-stone-300 bg-white text-stone-700 hover:scale-110 hover:bg-gold-50'
+                      }`}
+                    >
+                      {anchor.type === 'music' ? (
+                        <Music className="h-4 w-4" />
                       ) : (
-                        <MapPin className="w-4 h-4" />
+                        <MapPin className="h-4 w-4" />
                       )}
                     </div>
-
-                    {/* Quick Hover Label */}
-                    <span className="absolute left-1/2 -translate-x-1/2 top-11 bg-stone-900 text-stone-50 text-[10px] px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition duration-200 shadow-md">
-                      {loc.name}
+                    <span className="pointer-events-none absolute left-1/2 top-11 -translate-x-1/2 whitespace-nowrap rounded-md bg-stone-900 px-2 py-0.5 text-[10px] text-stone-50 opacity-0 shadow-md transition duration-200 group-hover:opacity-100">
+                      {anchor.name}
                     </span>
                   </div>
                 </div>
               );
             })}
 
-            {/* Dynamic Rendering of Community-contributed Pins */}
-            {approvedMapPins.map((pin) => {
-              if (!isPinVisible(pin)) return null;
-              const isSelected = selectedPin?.id === pin.id;
-              const colorClasses = getPinColor(pin.category);
+            {mapItems.map((item) => {
+              if (!showCommunityPin(item)) return null;
+              const isSelected = selectedPin?.id === item.id;
+              const color = pinColor(item.category);
 
               return (
                 <div
-                  key={pin.id}
-                  id={`user-pin-${pin.id}`}
-                  style={{ left: `${pin.latX}%`, top: `${pin.latY}%` }}
-                  onClick={() => handleSelectPin(pin)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer"
+                  key={item.id}
+                  id={`user-pin-${item.id}`}
+                  style={{ left: `${item.latX}%`, top: `${item.latY}%` }}
+                  onClick={() => selectPin(item)}
+                  className="absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
                 >
-                  <div className="relative group">
-                    {/* Soft pulsating aura */}
-                    <span className={`absolute -inset-1.5 rounded-full opacity-60 animate-ping ${
-                      isSelected ? 'bg-gold-400' : 'bg-stone-400'
-                    }`} />
-                    
-                    <button className={`w-3.5 h-3.5 rounded-full border-2 cursor-pointer duration-300 hover:scale-130 ${colorClasses} ${
-                      isSelected ? 'scale-135 ring-4 ring-white' : ''
-                    }`}>
-                      {/* Interactive dot inside */}
-                    </button>
-
-                    {/* Label markup */}
-                    <span className="absolute left-1/2 -translate-x-1/2 top-6 bg-stone-800 text-stone-100 text-[9px] px-2 py-0.5 rounded shadow-sm opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition">
-                      {pin.title}
+                  <div className="group relative">
+                    <span
+                      className={`absolute -inset-1.5 animate-ping rounded-full opacity-60 ${
+                        isSelected ? 'bg-gold-400' : 'bg-stone-400'
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      aria-label={`Abrir memória ${item.title}`}
+                      className={`h-3.5 w-3.5 cursor-pointer rounded-full border-2 transition duration-300 hover:scale-[1.3] ${color} ${
+                        isSelected ? 'scale-[1.35] ring-4 ring-white' : ''
+                      }`}
+                    />
+                    <span className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 whitespace-nowrap rounded bg-stone-800 px-2 py-0.5 text-[9px] text-stone-100 opacity-0 shadow-sm transition group-hover:opacity-100">
+                      {item.title}
                     </span>
                   </div>
                 </div>
               );
             })}
 
-            {/* Interactive guidelines instructing user about the space */}
-            {approvedMapPins.length === 0 && (
-              <div className="absolute inset-0 flex items-center justify-center p-8 text-center pointer-events-none">
-                <p className="bg-stone-50/80 backdrop-blur border border-stone-200/50 px-6 py-4 rounded-2xl max-w-sm text-xs text-stone-500 font-light">
-                  Nenhum ponto afetivo de comunidade cadastrado para esta categoria ainda. Seja o primeiro a criar um marco sônico!
+            {mapItems.length === 0 && (
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-8 text-center">
+                <p className="max-w-sm rounded-2xl border border-stone-200/50 bg-stone-50/80 px-6 py-4 text-xs font-light text-stone-500 backdrop-blur">
+                  Nenhum ponto afetivo de comunidade cadastrado para esta
+                  categoria ainda. Seja o primeiro a criar um marco sônico!
                 </p>
               </div>
             )}
-
           </div>
         </div>
 
-        {/* Dynamic Detail Panel Box */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="space-y-6 lg:col-span-4">
           <AnimatePresence mode="wait">
             {selectedAnchor && (
               <motion.div
@@ -235,42 +265,77 @@ export default function AcousticCartography({ approvedItems }: AcousticCartograp
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="bg-white rounded-3xl p-6 border border-gold-300/40 shadow-lg space-y-6 flex flex-col h-full"
+                className="flex h-full flex-col space-y-6 rounded-3xl border border-gold-300/40 bg-white p-6 shadow-lg"
               >
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 bg-gold-100 text-gold-800 text-[10px] font-mono font-semibold tracking-wider uppercase rounded-full">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-gold-100 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-gold-800">
                       Marco de Memória
                     </span>
-                    <span className="text-[10px] text-stone-400 font-mono">ID: {selectedAnchor.id}</span>
+                    <span className="font-mono text-[10px] text-stone-400">
+                      ID: {selectedAnchor.id}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-serif text-stone-900 font-black">{selectedAnchor.name}</h3>
+                  <h3 className="font-serif text-xl font-black text-stone-900">
+                    {selectedAnchor.name}
+                  </h3>
                 </div>
 
-                <p className="text-sm font-sans text-stone-600 leading-relaxed font-light">
+                <p className="font-sans text-sm font-light leading-relaxed text-stone-600">
                   {selectedAnchor.description}
                 </p>
 
-                {/* Simulated Acoustic Signatures of Vale */}
-                <div className="bg-gold-50/50 border border-gold-100 px-4 py-4 rounded-2xl space-y-2">
-                  <div className="flex items-center gap-2 text-gold-800 font-mono text-[10px] uppercase font-bold tracking-wider">
-                    <Volume2 className="w-4 h-4 text-gold-600 animate-pulse" />
+                <div className="space-y-3 rounded-2xl border border-gold-100 bg-gold-50/50 px-4 py-4">
+                  <div className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-gold-800">
+                    <Volume2 className="h-4 w-4 animate-pulse text-gold-600" />
                     <span>Assinatura Acústica do Lugar</span>
                   </div>
-                  <p className="text-xs text-stone-700 italic">
-                    &ldquo;{selectedAnchor.audioSignature}&rdquo;
+                  <p className="text-xs italic text-stone-700">
+                    “{selectedAnchor.audioSignature}”
                   </p>
+
+                  {selectedAnchor.audioUrl && (
+                    <div className="space-y-2 border-t border-gold-100 pt-3">
+                      <span className="block font-mono text-[9px] uppercase tracking-wider text-stone-500">
+                        Paisagem sonora ilustrativa
+                      </span>
+                      <audio
+                        key={selectedAnchor.audioUrl}
+                        src={selectedAnchor.audioUrl}
+                        controls
+                        preload="metadata"
+                        className="w-full"
+                        aria-label={
+                          selectedAnchor.audioLabel ||
+                          `Ouvir paisagem sonora de ${selectedAnchor.name}`
+                        }
+                      >
+                        Seu navegador não suporta reprodução de áudio.
+                      </audio>
+                      <p className="text-[9px] leading-relaxed text-stone-400">
+                        Áudio criado digitalmente para ambientação poética do
+                        mapa; não é uma gravação de campo histórica.
+                      </p>
+                    </div>
+                  )}
                 </div>
 
-                {/* Spatial data */}
-                <div className="mt-auto pt-6 border-t border-stone-100 grid grid-cols-2 gap-4 font-mono text-[10px] text-stone-500">
+                <div className="mt-auto grid grid-cols-2 gap-4 border-t border-stone-100 pt-6 font-mono text-[10px] text-stone-500">
                   <div>
-                    <span className="block text-stone-400 uppercase text-[8px] tracking-wider">Origem do Espaço</span>
-                    <span className="text-stone-850 font-semibold uppercase">{selectedAnchor.type}</span>
+                    <span className="block text-[8px] uppercase tracking-wider text-stone-400">
+                      Origem do Espaço
+                    </span>
+                    <span className="font-semibold uppercase text-stone-850">
+                      {selectedAnchor.type}
+                    </span>
                   </div>
                   <div>
-                    <span className="block text-stone-400 uppercase text-[8px] tracking-wider">Coordenadas Cartesianas</span>
-                    <span className="text-stone-850 font-semibold">X: {selectedAnchor.x}%, Y: {selectedAnchor.y}%</span>
+                    <span className="block text-[8px] uppercase tracking-wider text-stone-400">
+                      Coordenadas Cartesianas
+                    </span>
+                    <span className="font-semibold text-stone-850">
+                      X: {selectedAnchor.x}%, Y: {selectedAnchor.y}%
+                    </span>
                   </div>
                 </div>
               </motion.div>
@@ -282,49 +347,84 @@ export default function AcousticCartography({ approvedItems }: AcousticCartograp
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="bg-white rounded-3xl p-6 border border-stone-200 shadow-lg space-y-6 flex flex-col h-full"
+                className="flex h-full flex-col space-y-6 rounded-3xl border border-stone-200 bg-white p-6 shadow-lg"
               >
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 text-[10px] font-mono uppercase tracking-wider rounded-lg">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="rounded-lg bg-stone-100 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-stone-700">
                       {selectedPin.category}
                     </span>
-                    <div className="flex items-center gap-1 text-stone-400 font-mono text-[9px]">
-                      <Calendar className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-1 font-mono text-[9px] text-stone-400">
+                      <Calendar className="h-3.5 w-3.5" />
                       <span>{selectedPin.date}</span>
                     </div>
                   </div>
-                  <h3 className="text-lg font-serif font-bold text-stone-950">{selectedPin.title}</h3>
+                  <h3 className="font-serif text-lg font-bold text-stone-950">
+                    {selectedPin.title}
+                  </h3>
                 </div>
 
-                <blockquote className="text-sm font-sans text-stone-600 leading-relaxed font-light pl-4 border-l-2 border-stone-200">
+                <blockquote className="border-l-2 border-stone-200 pl-4 font-sans text-sm font-light leading-relaxed text-stone-600">
                   {selectedPin.content}
                 </blockquote>
 
-                {selectedPin.audioMood && (
-                  <div className="bg-stone-50 hover:bg-stone-100 px-4 py-3.5 rounded-2xl flex items-center gap-3 transition">
-                    <div className="p-2 bg-stone-200/50 rounded-lg text-stone-600">
-                      <Volume2 className="w-4 h-4 text-emerald-600 animate-pulse" />
+                {(selectedPin.audioMood || hasUploadedAudio) && (
+                  <div className="space-y-3 rounded-2xl bg-stone-50 px-4 py-3.5 transition hover:bg-stone-100">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-stone-200/50 p-2 text-stone-600">
+                        <Volume2 className="h-4 w-4 animate-pulse text-emerald-600" />
+                      </div>
+                      <div className="text-left font-sans">
+                        <span className="block font-mono text-[8px] font-semibold uppercase tracking-widest text-stone-400">
+                          {hasUploadedAudio
+                            ? 'Registro sonoro da memória'
+                            : 'Paisagem sônica'}
+                        </span>
+                        {selectedPin.audioMood && (
+                          <p className="text-xs font-light italic text-stone-700">
+                            “{selectedPin.audioMood}”
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-left font-sans">
-                      <span className="block font-mono text-[8px] text-stone-400 uppercase tracking-widest font-semibold">Paisagem sônica</span>
-                      <p className="text-xs text-stone-700 italic font-light">&ldquo;{selectedPin.audioMood}&rdquo;</p>
-                    </div>
+
+                    {hasUploadedAudio && selectedPin.mediaUrl && (
+                      <div className="space-y-1.5 border-t border-stone-200 pt-3">
+                        <audio
+                          key={selectedPin.mediaUrl}
+                          src={selectedPin.mediaUrl}
+                          controls
+                          preload="metadata"
+                          className="w-full"
+                          aria-label={`Ouvir áudio enviado por ${selectedPin.author}`}
+                        >
+                          Seu navegador não suporta reprodução de áudio.
+                        </audio>
+                        {selectedPin.mediaFileName && (
+                          <p className="truncate font-mono text-[9px] text-stone-400">
+                            {selectedPin.mediaFileName}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {/* Submitter Author tag */}
-                <div className="mt-auto pt-6 border-t border-stone-100 flex items-center justify-between font-sans text-xs">
+                <div className="mt-auto flex items-center justify-between border-t border-stone-100 pt-6 font-sans text-xs">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-stone-100 rounded-full flex items-center justify-center text-stone-500 font-bold">
-                      {selectedPin.author[0]}
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-stone-100 font-bold text-stone-500">
+                      {selectedPin.author?.[0] || '?'}
                     </div>
                     <div>
-                      <span className="block text-[10px] text-stone-400">Contribuído por</span>
-                      <span className="font-semibold text-stone-850">{selectedPin.author}</span>
+                      <span className="block text-[10px] text-stone-400">
+                        Contribuído por
+                      </span>
+                      <span className="font-semibold text-stone-850">
+                        {selectedPin.author}
+                      </span>
                     </div>
                   </div>
-                  <span className="text-[10px] text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded uppercase font-mono font-bold tracking-wider">
+                  <span className="rounded bg-emerald-50 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-500">
                     Curado
                   </span>
                 </div>
@@ -336,15 +436,18 @@ export default function AcousticCartography({ approvedItems }: AcousticCartograp
                 key="empty-panel"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-stone-50 rounded-3xl p-8 border border-dashed border-stone-300/60 flex flex-col items-center justify-center text-center h-[380px] space-y-4"
+                className="flex h-[380px] flex-col items-center justify-center space-y-4 rounded-3xl border border-dashed border-stone-300/60 bg-stone-50 p-8 text-center"
               >
-                <div className="p-4 bg-stone-100 rounded-full text-stone-400">
-                  <Eye className="w-6 h-6 animate-pulse" />
+                <div className="rounded-full bg-stone-100 p-4 text-stone-400">
+                  <Radar className="h-6 w-6 animate-pulse" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="font-serif font-medium text-stone-850">Selecione um Marco</h4>
-                  <p className="text-xs text-stone-500 font-sans font-light max-w-[200px] leading-relaxed">
-                    Clique nos pontos do mapa para decodificar as memórias e texturas sônicas do Vale.
+                  <h4 className="font-serif font-medium text-stone-850">
+                    Selecione um Marco
+                  </h4>
+                  <p className="max-w-[200px] font-sans text-xs font-light leading-relaxed text-stone-500">
+                    Clique nos pontos do mapa para decodificar as memórias e
+                    texturas sônicas do Vale.
                   </p>
                 </div>
               </motion.div>
