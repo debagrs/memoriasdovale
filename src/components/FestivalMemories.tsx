@@ -2,15 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CommunityItem, FestivalYear } from '../types';
 import { FESTIVAL_HISTORY } from '../data';
-import {
-  Music,
-  Eye,
-  Sparkles,
-  BookOpen,
-  Volume2,
-  Users,
-  Award,
-} from 'lucide-react';
+import { Music, Eye, Calendar, Sparkles, BookOpen, Volume2, TrendingUp, Users, Award, Play } from 'lucide-react';
 
 interface FestivalMemoriesProps {
   approvedItems: CommunityItem[];
@@ -19,17 +11,14 @@ interface FestivalMemoriesProps {
 export default function FestivalMemories({ approvedItems }: FestivalMemoriesProps) {
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [isPlayingTeaser, setIsPlayingTeaser] = useState<string | null>(null);
-  const [mediaErrors, setMediaErrors] = useState<Record<string, boolean>>({});
 
   const activeHistory: FestivalYear = FESTIVAL_HISTORY.find(f => f.year === selectedYear) || FESTIVAL_HISTORY[FESTIVAL_HISTORY.length - 1];
 
-  // Todas as memórias aprovadas aparecem em “Falas da Comunidade”.
-  // Tipo e categoria continuam visíveis como classificação, mas não ocultam registros.
-  const festivalStories = [...approvedItems].sort((a, b) => {
-    const dateA = new Date(a.date || 0).getTime();
-    const dateB = new Date(b.date || 0).getTime();
-    return dateB - dateA;
-  });
+  // Filter approved community items specific to the classical music festival
+  const festivalStories = approvedItems.filter(item => 
+    item.category === 'Música Clássica' || 
+    item.type === 'festival'
+  );
 
   // Custom data art calculation - finding max value for charts scaling
   const maxStudents = Math.max(...FESTIVAL_HISTORY.map(f => f.students));
@@ -62,181 +51,6 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
             O <strong className="font-medium text-stone-100">Festival Internacional de Inverno de Vale Vêneto (UFSM)</strong> é um fenômeno onde o rigor da academia erudita encontra o silêncio bucólico da serra gaúcha. Por duas semanas em toda metade de ano, ruelas pacatas residem ao compasso de violinos, violoncelos e flautas, acolhendo centenas de instrumentistas de destaque mundial.
           </p>
         </div>
-      </section>
-
-      {/* Narrative Section featuring Community Testimonials & Festival Chronicles */}
-      <section className="space-y-6">
-        <div className="space-y-1">
-          <span className="text-xs text-olive-700 font-mono tracking-widest uppercase">Falas da Comunidade</span>
-          <h3 className="text-2xl font-serif text-stone-900 tracking-tight font-bold">Relatos e Testemunhos do Festival</h3>
-        </div>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-  {festivalStories.map((story) => (
-    <div
-      key={story.id}
-      id={`festival-story-${story.id}`}
-      className="bg-white p-6 rounded-2xl border border-stone-200/50 shadow-sm flex flex-col justify-between hover:border-gold-300 transition-all duration-300"
-    >
-      <div className="space-y-4 text-left">
-        <div className="flex items-center justify-between text-xs">
-          <span className="px-2.5 py-0.5 bg-rose-50 text-rose-800 rounded font-mono font-medium tracking-wide">
-            {story.category}
-          </span>
-
-          <span className="text-stone-400 font-mono text-[10px]">
-            {story.date}
-          </span>
-        </div>
-
-        <h4 className="text-lg font-serif font-semibold text-stone-900 leading-snug">
-          {story.title}
-        </h4>
-
-        <p className="text-xs text-stone-600 leading-relaxed font-sans font-light">
-          {story.content}
-        </p>
-
-        {story.mediaUrl ? (
-          <div className="mt-4 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
-            {String(story.mediaType || '').toLowerCase().startsWith('video') ? (
-              <video
-                src={String(story.mediaUrl).trim()}
-                controls
-                preload="metadata"
-                className="block w-full max-h-[460px] bg-black"
-              >
-                Seu navegador não consegue reproduzir este vídeo.
-              </video>
-            ) : String(story.mediaType || '').toLowerCase().startsWith('audio') ? (
-              <div className="p-4 bg-stone-50">
-                <audio
-                  src={String(story.mediaUrl).trim()}
-                  controls
-                  preload="metadata"
-                  className="w-full"
-                >
-                  Seu navegador não consegue reproduzir este áudio.
-                </audio>
-              </div>
-            ) : String(story.mediaType || '').toLowerCase().includes('pdf') ||
-              String(story.mediaType || '').toLowerCase().includes('document') ? (
-              <a
-                href={String(story.mediaUrl).trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 p-4 bg-stone-50 text-stone-700 hover:bg-stone-100 transition"
-              >
-                <span className="text-xs font-mono break-all">
-                  {story.mediaFileName || 'Abrir documento'}
-                </span>
-                <span aria-hidden="true">↗</span>
-              </a>
-            ) : mediaErrors[story.id] ? (
-              <div className="p-4 text-xs text-red-800 bg-red-50">
-                <p className="font-semibold">A imagem não conseguiu carregar.</p>
-                <a
-                  href={String(story.mediaUrl).trim()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline break-all"
-                >
-                  Abrir a mídia diretamente
-                </a>
-              </div>
-            ) : (
-              <a
-                href={String(story.mediaUrl).trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                <img
-                  src={String(story.mediaUrl).trim()}
-                  alt={story.title || `Imagem enviada por ${story.author}`}
-                  loading="lazy"
-                  onError={() =>
-                    setMediaErrors((current) => ({
-                      ...current,
-                      [story.id]: true,
-                    }))
-                  }
-                  className="block w-full h-auto max-h-[420px] object-cover transition-transform duration-300 hover:scale-[1.02]"
-                />
-              </a>
-            )}
-          </div>
-        ) : null}
-      </div>
-
-      <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs font-sans text-stone-500">
-        <div className="flex items-center gap-1.5 font-light text-[10px]">
-          <BookOpen className="w-3.5 h-3.5 text-stone-400" />
-
-          <span>
-            Relato de{' '}
-            <strong className="font-semibold text-stone-700">
-              {story.author}
-            </strong>
-          </span>
-        </div>
-
-        {story.audioMood && (
-          <button
-            type="button"
-            id={`btn-play-${story.id}`}
-            onClick={() => toggleTeaser(story.id)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-200 hover:border-gold-400 text-[10px] text-stone-600 font-mono cursor-pointer transition uppercase"
-          >
-            <Volume2
-              className={`w-3.5 h-3.5 text-emerald-600 ${
-                isPlayingTeaser === story.id ? 'animate-bounce' : ''
-              }`}
-            />
-
-            <span>
-              {isPlayingTeaser === story.id
-                ? 'Tocando...'
-                : 'Ouvir tom sônico'}
-            </span>
-          </button>
-        )}
-      </div>
-
-      <AnimatePresence>
-        {isPlayingTeaser === story.id && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden mt-3 bg-stone-50 border border-stone-200/50 p-2 text-[10px] rounded-lg italic text-stone-500"
-          >
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-
-              <span>
-                Sintetizador sônico sutil: “{story.audioMood}”
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  ))}
-
-  {festivalStories.length === 0 && (
-    <div className="col-span-1 md:col-span-2 text-center py-12 bg-stone-50 rounded-2xl border border-dashed border-stone-300 max-w-lg mx-auto w-full">
-      <Eye className="w-8 h-8 text-stone-300 mx-auto mb-2" />
-
-      <p className="text-xs text-stone-500 font-sans">
-        Nenhuma história do Festival cadastrada ainda. Compartilhe a sua
-        lembrança!
-      </p>
-    </div>
-  )}
-</div>
       </section>
 
       {/* Interactive History Timeline Segment */}
@@ -375,6 +189,126 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* Narrative Section featuring Community Testimonials & Festival Chronicles */}
+      <section className="space-y-6">
+        <div className="space-y-1">
+          <span className="text-xs text-olive-700 font-mono tracking-widest uppercase">Falas da Comunidade</span>
+          <h3 className="text-2xl font-serif text-stone-900 tracking-tight font-bold">Relatos e Testemunhos do Festival</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {festivalStories.map((story) => (
+            <div 
+              key={story.id} 
+              id={`festival-story-${story.id}`}
+              className="bg-white p-6 rounded-2xl border border-stone-200/50 shadow-sm flex flex-col justify-between hover:border-gold-300 transition-all duration-300"
+            >
+              <div className="space-y-4 text-left">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="px-2.5 py-0.5 bg-rose-50 text-rose-800 rounded font-mono font-medium tracking-wide">
+                    {story.category}
+                  </span>
+                  <span className="text-stone-400 font-mono text-[10px]">{story.date}</span>
+                </div>
+                
+                <h4 className="text-lg font-serif font-semibold text-stone-900 leading-snug">
+                  {story.title}
+                </h4>
+
+                <p className="text-xs text-stone-600 leading-relaxed font-sans font-light">
+                  {story.content}
+                </p>
+              </div>
+
+              {/* Sound Teaser Player */}
+              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs font-sans text-stone-500">
+                <div className="flex items-center gap-1.5 font-light text-[10px]">
+                  <BookOpen className="w-3.5 h-3.5 text-stone-400" />
+                  <span>Relato de <strong className="font-semibold text-stone-700">{story.author}</strong></span>
+                </div>
+
+                {(story.audioMood || (story.mediaType === 'audio' && story.mediaUrl)) && (
+                  <button 
+                    id={`btn-play-${story.id}`}
+                    type="button"
+                    onClick={() => toggleTeaser(story.id)}
+                    aria-expanded={isPlayingTeaser === story.id}
+                    aria-controls={`festival-audio-${story.id}`}
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-200 hover:border-gold-400 text-[10px] text-stone-600 font-mono cursor-pointer transition uppercase"
+                  >
+                    <Volume2 className={`w-3.5 h-3.5 text-emerald-600 ${isPlayingTeaser === story.id ? 'animate-bounce' : ''}`} />
+                    <span>
+                      {isPlayingTeaser === story.id
+                        ? 'Fechar áudio'
+                        : story.mediaType === 'audio' && story.mediaUrl
+                          ? 'Ouvir áudio'
+                          : 'Ouvir Tom sônico'}
+                    </span>
+                  </button>
+                )}
+              </div>
+
+              {/* Responsive Sound wave animation player */}
+              <AnimatePresence>
+                {isPlayingTeaser === story.id && (
+                  <motion.div 
+                    id={`festival-audio-${story.id}`}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden mt-3 bg-stone-50 border border-stone-200/50 p-3 text-[10px] rounded-lg text-stone-500"
+                  >
+                    {story.mediaType === 'audio' && story.mediaUrl ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 font-mono uppercase tracking-wider not-italic">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                          <span>Registro sonoro da memória</span>
+                        </div>
+                        <audio
+                          key={story.mediaUrl}
+                          src={story.mediaUrl}
+                          controls
+                          autoPlay
+                          preload="metadata"
+                          className="w-full"
+                          aria-label={`Ouvir áudio da memória ${story.title}`}
+                        >
+                          Seu navegador não suporta reprodução de áudio.
+                        </audio>
+                        {story.mediaFileName && (
+                          <p className="font-mono text-[9px] text-stone-400 truncate">{story.mediaFileName}</p>
+                        )}
+                        {story.audioMood && (
+                          <p className="italic">&ldquo;{story.audioMood}&rdquo;</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 italic">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span>Sintetizador sônico sutil: &ldquo;{story.audioMood}&rdquo;</span>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+
+          {festivalStories.length === 0 && (
+            <div className="col-span-2 text-center py-12 bg-stone-50 rounded-2xl border border-dashed border-stone-300 max-w-lg mx-auto w-full">
+              <Eye className="w-8 h-8 text-stone-300 mx-auto mb-2" />
+              <p className="text-xs text-stone-500 font-sans">Nenhuma história de música de colônia cadastrada ainda. Compartilhe a sua tocante lembrança!</p>
+            </div>
+          )}
         </div>
       </section>
     </div>
