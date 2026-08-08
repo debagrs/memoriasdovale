@@ -230,14 +230,23 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
                   <span>Relato de <strong className="font-semibold text-stone-700">{story.author}</strong></span>
                 </div>
 
-                {story.audioMood && (
+                {(story.audioMood || (story.mediaType === 'audio' && story.mediaUrl)) && (
                   <button 
                     id={`btn-play-${story.id}`}
+                    type="button"
                     onClick={() => toggleTeaser(story.id)}
+                    aria-expanded={isPlayingTeaser === story.id}
+                    aria-controls={`festival-audio-${story.id}`}
                     className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-200 hover:border-gold-400 text-[10px] text-stone-600 font-mono cursor-pointer transition uppercase"
                   >
                     <Volume2 className={`w-3.5 h-3.5 text-emerald-600 ${isPlayingTeaser === story.id ? 'animate-bounce' : ''}`} />
-                    <span>{isPlayingTeaser === story.id ? 'Tocando...' : 'Ouvir Tom sônico'}</span>
+                    <span>
+                      {isPlayingTeaser === story.id
+                        ? 'Fechar áudio'
+                        : story.mediaType === 'audio' && story.mediaUrl
+                          ? 'Ouvir áudio'
+                          : 'Ouvir Tom sônico'}
+                    </span>
                   </button>
                 )}
               </div>
@@ -246,18 +255,48 @@ export default function FestivalMemories({ approvedItems }: FestivalMemoriesProp
               <AnimatePresence>
                 {isPlayingTeaser === story.id && (
                   <motion.div 
+                    id={`festival-audio-${story.id}`}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="overflow-hidden mt-3 bg-stone-50 border border-stone-200/50 p-2 text-[10px] rounded-lg italic text-stone-500"
+                    className="overflow-hidden mt-3 bg-stone-50 border border-stone-200/50 p-3 text-[10px] rounded-lg text-stone-500"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span>Sintetizador sônico sutil: &ldquo;{story.audioMood}&rdquo;</span>
-                    </div>
+                    {story.mediaType === 'audio' && story.mediaUrl ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 font-mono uppercase tracking-wider not-italic">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                          <span>Registro sonoro da memória</span>
+                        </div>
+                        <audio
+                          key={story.mediaUrl}
+                          src={story.mediaUrl}
+                          controls
+                          autoPlay
+                          preload="metadata"
+                          className="w-full"
+                          aria-label={`Ouvir áudio da memória ${story.title}`}
+                        >
+                          Seu navegador não suporta reprodução de áudio.
+                        </audio>
+                        {story.mediaFileName && (
+                          <p className="font-mono text-[9px] text-stone-400 truncate">{story.mediaFileName}</p>
+                        )}
+                        {story.audioMood && (
+                          <p className="italic">&ldquo;{story.audioMood}&rdquo;</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 italic">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span>Sintetizador sônico sutil: &ldquo;{story.audioMood}&rdquo;</span>
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
