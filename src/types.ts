@@ -42,4 +42,6 @@ export interface MentalMapReference {
   x: number; // grid X
   y: number; // grid Y
   audioSignature: string;
+  audioUrl?: string; // Optional illustrative ambient audio for reference locations
+  audioLabel?: string; // Short accessible label for the audio player
 }
